@@ -3,6 +3,7 @@
 import { SearchResults } from "@spotify/web-api-ts-sdk";
 import { useEffect, useState } from "react";
 import sdk from "@/lib/spotify-sdk/ClientInstance";
+import SearchResultsList from "@/components/SearchResultsList";
 
 export default function Home() {
   const [searchType, setSearchType] = useState<"artist" | "track">("artist");
@@ -42,20 +43,7 @@ export default function Home() {
         />
       </label>
       <input onChange={(event) => setQuery(event.target.value)} />
-      {results?.artists && (
-        <ul>
-          {results.artists.items.map((artist) => (
-            <li key={artist.id}>{artist.name}</li>
-          ))}
-        </ul>
-      )}
-      {results?.tracks && (
-        <ul>
-          {results.tracks.items.map((track) => (
-            <li key={track.id}>{track.name}</li>
-          ))}
-        </ul>
-      )}
+      <SearchResultsList results={results} />
     </div>
   );
 }

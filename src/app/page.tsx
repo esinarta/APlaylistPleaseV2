@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import sdk from "@/lib/spotify-sdk/ClientInstance";
 import SearchResultsList from "@/components/SearchResultsList";
 import RecommendationsForm from "@/components/RecommendationsForm";
+import RecommendationsList from "@/components/RecommendationsList";
 
 export default function Home() {
   const [searchType, setSearchType] = useState<"artist" | "track">("artist");
@@ -14,6 +15,7 @@ export default function Home() {
   const [recommendationSeeds, setRecommendationSeeds] = useState<
     (Artist | Track)[]
   >([]);
+  const [recommendations, setRecommendations] = useState<Track[]>([]);
 
   useEffect(() => {
     if (query === "") return;
@@ -56,8 +58,10 @@ export default function Home() {
         <RecommendationsForm
           recommendationSeeds={recommendationSeeds}
           setRecommendationSeeds={setRecommendationSeeds}
+          setRecommendations={setRecommendations}
         />
       </div>
+      <RecommendationsList recommendations={recommendations} />
     </div>
   );
 }

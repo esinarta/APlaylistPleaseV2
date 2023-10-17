@@ -1,15 +1,19 @@
 "use client";
 
-import { SearchResults } from "@spotify/web-api-ts-sdk";
+import { Artist, SearchResults, Track } from "@spotify/web-api-ts-sdk";
 import { useEffect, useState } from "react";
 import sdk from "@/lib/spotify-sdk/ClientInstance";
 import SearchResultsList from "@/components/SearchResultsList";
+import RecommendationsForm from "@/components/RecommendationsForm";
 
 export default function Home() {
   const [searchType, setSearchType] = useState<"artist" | "track">("artist");
   const [query, setQuery] = useState("");
   const [results, setResults] =
     useState<SearchResults<"artist"[] | "track"[]>>();
+  const [recommendationSeeds, setRecommendationSeeds] = useState<
+    (Artist | Track)[]
+  >([]);
 
   useEffect(() => {
     if (query === "") return;
@@ -43,7 +47,17 @@ export default function Home() {
         />
       </label>
       <input onChange={(event) => setQuery(event.target.value)} />
-      <SearchResultsList results={results} />
+      <div className="flex flex-row gap-12">
+        <SearchResultsList
+          results={results}
+          recommendationSeeds={recommendationSeeds}
+          setRecommendationSeeds={setRecommendationSeeds}
+        />
+        <RecommendationsForm
+          recommendationSeeds={recommendationSeeds}
+          setRecommendationSeeds={setRecommendationSeeds}
+        />
+      </div>
     </div>
   );
 }

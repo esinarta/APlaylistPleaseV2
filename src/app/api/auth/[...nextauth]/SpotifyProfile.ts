@@ -16,7 +16,12 @@ const spotifyProfile = SpotifyProvider({
 
 const authURL = new URL("https://accounts.spotify.com/authorize");
 
-const scopes = ["user-read-email", "user-top-read"];
+const scopes = [
+  "user-read-email",
+  "user-top-read",
+  "playlist-modify-private",
+  "playlist-modify-public",
+];
 
 authURL.searchParams.append("scope", scopes.join(" "));
 

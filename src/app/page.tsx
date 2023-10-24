@@ -48,7 +48,10 @@ export default function Home() {
           onChange={(event) => setSearchType("track")}
         />
       </label>
-      <input onChange={(event) => setQuery(event.target.value)} />
+      <input
+        className="text-black"
+        onChange={(event) => setQuery(event.target.value)}
+      />
       <div className="flex flex-row gap-12">
         <SearchResultsList
           results={results}

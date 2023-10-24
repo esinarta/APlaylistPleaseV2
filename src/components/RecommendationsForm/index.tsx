@@ -1,5 +1,6 @@
 import { Artist, Track } from "@spotify/web-api-ts-sdk";
 import sdk from "@/lib/spotify-sdk/ClientInstance";
+import { useState } from "react";
 
 const RecommendationsForm = ({
   recommendationSeeds,
@@ -10,6 +11,7 @@ const RecommendationsForm = ({
   setRecommendationSeeds: (seeds: (Artist | Track)[]) => void;
   setRecommendations: (tracks: Track[]) => void;
 }) => {
+  const [size, setSize] = useState(20);
   if (recommendationSeeds.length > 5) return <div>Max 5 seeds allowed</div>;
 
   const deleteSeed = (seedId: string) => {
@@ -27,6 +29,7 @@ const RecommendationsForm = ({
         seed_tracks: recommendationSeeds
           .filter((seed) => seed.type === "track")
           .map((seed) => seed.id),
+        limit: size,
       });
       setRecommendations(results.tracks);
     })();
@@ -43,6 +46,15 @@ const RecommendationsForm = ({
           </li>
         ))}
       </ul>
+      <input
+        className="text-black"
+        type="number"
+        name="size"
+        value={size}
+        min={1}
+        max={100}
+        onChange={(event) => setSize(parseInt(event.target.value))}
+      />
       <button type="submit">Submit</button>
     </form>
   );

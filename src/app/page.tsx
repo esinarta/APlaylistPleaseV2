@@ -6,6 +6,7 @@ import sdk from "@/lib/spotify-sdk/ClientInstance";
 import SearchResultsList from "@/components/SearchResultsList";
 import RecommendationsForm from "@/components/RecommendationsForm";
 import RecommendationsList from "@/components/RecommendationsList";
+import PlaylistForm from "@/components/PlaylistForm";
 
 export default function Home() {
   const [searchType, setSearchType] = useState<"artist" | "track">("artist");
@@ -65,6 +66,9 @@ export default function Home() {
         />
       </div>
       <RecommendationsList recommendations={recommendations} />
+      {recommendations.length > 0 && (
+        <PlaylistForm recommendations={recommendations} />
+      )}
     </div>
   );
 }

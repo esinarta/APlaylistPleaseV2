@@ -21,7 +21,11 @@ const SearchResultsList = ({
       {results.artists && (
         <div>
           {results.artists.items.map((artist) => (
-            <CommandItem key={artist.id} onSelect={() => addSeed(artist)}>
+            <CommandItem
+              key={artist.id}
+              value={artist.id}
+              onSelect={() => addSeed(artist)}
+            >
               {artist.name}
             </CommandItem>
           ))}
@@ -30,7 +34,11 @@ const SearchResultsList = ({
       {results.tracks && (
         <div>
           {results.tracks.items.map((track) => (
-            <CommandItem key={track.id} onSelect={() => addSeed(track)}>
+            <CommandItem
+              key={track.id}
+              value={track.id}
+              onSelect={() => addSeed(track)}
+            >
               {track.name}
             </CommandItem>
           ))}

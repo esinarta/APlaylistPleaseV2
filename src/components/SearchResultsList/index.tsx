@@ -13,6 +13,9 @@ const SearchResultsList = ({
   if (!results) return null;
 
   const addSeed = (seed: Artist | Track) => {
+    if (recommendationSeeds.find((s) => s.id === seed.id)) return;
+    if (recommendationSeeds.length >= 5) return;
+
     setRecommendationSeeds([...recommendationSeeds, seed]);
   };
 

@@ -39,7 +39,7 @@ const SearchResultsList = ({
               value={track.id}
               onSelect={() => addSeed(track)}
             >
-              {track.name}
+              {track.name} - {track.artists[0].name}
             </CommandItem>
           ))}
         </div>

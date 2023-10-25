@@ -56,6 +56,13 @@ export default function Home() {
             </TabsTrigger>
           </TabsList>
         </Tabs>
+        {recommendationSeeds.length > 0 && (
+          <RecommendationsForm
+            recommendationSeeds={recommendationSeeds}
+            setRecommendationSeeds={setRecommendationSeeds}
+            setRecommendations={setRecommendations}
+          />
+        )}
         <Command
           className="w-1/2 rounded-lg border shadow-md"
           shouldFilter={false}
@@ -75,13 +82,7 @@ export default function Home() {
           </CommandList>
         </Command>
       </div>
-      <div className="flex flex-row gap-12">
-        <RecommendationsForm
-          recommendationSeeds={recommendationSeeds}
-          setRecommendationSeeds={setRecommendationSeeds}
-          setRecommendations={setRecommendations}
-        />
-      </div>
+
       <RecommendationsList recommendations={recommendations} />
       {recommendations.length > 0 && (
         <PlaylistForm recommendations={recommendations} />

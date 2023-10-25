@@ -25,7 +25,9 @@ export default async function RootLayout({
       <body className={inter.className}>
         <Providers>
           <SessionProvider session={session}>
-            <User />
+            <div className="flex justify-end m-2">
+              <User />
+            </div>
             <main>{children}</main>
           </SessionProvider>
         </Providers>

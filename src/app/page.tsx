@@ -7,6 +7,8 @@ import SearchResultsList from "@/components/SearchResultsList";
 import RecommendationsForm from "@/components/RecommendationsForm";
 import RecommendationsList from "@/components/RecommendationsList";
 import PlaylistForm from "@/components/PlaylistForm";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Command, CommandInput, CommandList } from "@/components/ui/command";
 
 export default function Home() {
   const [searchType, setSearchType] = useState<"artist" | "track">("artist");
@@ -18,47 +20,62 @@ export default function Home() {
   >([]);
   const [recommendations, setRecommendations] = useState<Track[]>([]);
 
+  const onTabChange = (value: string) => {
+    if (value === "artist" || value === "track") setSearchType(value);
+  };
+
   useEffect(() => {
-    if (query === "") return;
+    if (query === "") {
+      setResults(undefined);
+      return;
+    }
 
     (async () => {
       const results = await sdk.search(query, [searchType]);
-      setResults(() => results);
+      setResults(results);
     })();
   }, [query, searchType]);
 
   return (
     <div>
-      <label>
-        Artist
-        <input
-          type="radio"
-          name="searchType"
-          value="artist"
-          checked={searchType === "artist"}
-          onChange={(event) => setSearchType("artist")}
-        />
-      </label>
-      <label>
-        Track
-        <input
-          type="radio"
-          name="searchType"
-          value="track"
-          checked={searchType === "track"}
-          onChange={(event) => setSearchType("track")}
-        />
-      </label>
-      <input
-        className="text-black"
-        onChange={(event) => setQuery(event.target.value)}
-      />
+      <div className="flex flex-col justify-center items-center gap-4">
+        <Tabs
+          value={searchType}
+          defaultValue="artist"
+          onValueChange={onTabChange}
+        >
+          <TabsList>
+            <TabsTrigger
+              value="artist"
+              onChange={() => setSearchType("artist")}
+            >
+              Artist
+            </TabsTrigger>
+            <TabsTrigger value="track" onChange={() => setSearchType("track")}>
+              Track
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+        <Command
+          className="w-1/2 rounded-lg border shadow-md"
+          shouldFilter={false}
+        >
+          <CommandInput
+            placeholder={
+              searchType === "artist" ? "Search by artist" : "Search by track"
+            }
+            onValueChange={setQuery}
+          />
+          <CommandList>
+            <SearchResultsList
+              results={results}
+              recommendationSeeds={recommendationSeeds}
+              setRecommendationSeeds={setRecommendationSeeds}
+            />
+          </CommandList>
+        </Command>
+      </div>
       <div className="flex flex-row gap-12">
-        <SearchResultsList
-          results={results}
-          recommendationSeeds={recommendationSeeds}
-          setRecommendationSeeds={setRecommendationSeeds}
-        />
         <RecommendationsForm
           recommendationSeeds={recommendationSeeds}
           setRecommendationSeeds={setRecommendationSeeds}

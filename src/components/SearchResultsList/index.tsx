@@ -1,4 +1,5 @@
 import { Artist, SearchResults, Track } from "@spotify/web-api-ts-sdk";
+import { CommandItem } from "@/components/ui/command";
 
 const SearchResultsList = ({
   results,
@@ -18,22 +19,22 @@ const SearchResultsList = ({
   return (
     <div>
       {results.artists && (
-        <ul>
+        <div>
           {results.artists.items.map((artist) => (
-            <li key={artist.id}>
-              <button onClick={() => addSeed(artist)}>{artist.name}</button>
-            </li>
+            <CommandItem key={artist.id} onSelect={() => addSeed(artist)}>
+              {artist.name}
+            </CommandItem>
           ))}
-        </ul>
+        </div>
       )}
       {results.tracks && (
-        <ul>
+        <div>
           {results.tracks.items.map((track) => (
-            <li key={track.id}>
-              <button onClick={() => addSeed(track)}>{track.name}</button>
-            </li>
+            <CommandItem key={track.id} onSelect={() => addSeed(track)}>
+              {track.name}
+            </CommandItem>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

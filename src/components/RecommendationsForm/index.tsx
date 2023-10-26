@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Chip } from "@nextui-org/chip";
+import { Label } from "@/components/ui/label";
 
 const RecommendationsForm = ({
   recommendationSeeds,
@@ -39,27 +40,32 @@ const RecommendationsForm = ({
 
   return (
     <form
-      className="w-1/2 flex flex-row justify-between items-center gap-2"
+      className="w-1/2 flex flex-row justify-between items-end gap-2"
       onSubmit={onSubmit}
     >
-      <div className="flex gap-2">
+      <div className="flex items-end gap-2">
         {recommendationSeeds.map((seed) => (
           <Chip key={seed.id} onClose={() => deleteSeed(seed.id)}>
-            <div className="w-16 truncate text-ellipsis">{seed.name}</div>
+            <div className="w-12 truncate text-ellipsis">{seed.name}</div>
           </Chip>
         ))}
       </div>
-      <div className="flex flex-row items-center gap-2">
-        <Input
-          className="w-16"
-          type="number"
-          name="size"
-          value={size}
-          min={1}
-          max={100}
-          onChange={(event) => setSize(parseInt(event.target.value))}
-        />
-        <Button type="submit">Submit</Button>
+      <div className="flex flex-row items-end gap-4">
+        <div className="grid w-full max-w-sm items-center gap-1.5">
+          <Label htmlFor="size">Playlist Size</Label>
+          <Input
+            className="w-20"
+            type="number"
+            name="size"
+            value={size}
+            min={1}
+            max={100}
+            onChange={(event) => setSize(parseInt(event.target.value))}
+          />
+        </div>
+        <Button className="flex justify-end" type="submit">
+          Submit
+        </Button>
       </div>
     </form>
   );

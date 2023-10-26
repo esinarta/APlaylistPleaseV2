@@ -82,8 +82,10 @@ export default function Home() {
           </CommandList>
         </Command>
       </div>
-
-      <RecommendationsList recommendations={recommendations} />
+      <RecommendationsList
+        recommendations={recommendations}
+        recommendationSeeds={recommendationSeeds}
+      />
       {recommendations.length > 0 && (
         <PlaylistForm recommendations={recommendations} />
       )}

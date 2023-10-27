@@ -1,4 +1,5 @@
 import { Artist, Track } from "@spotify/web-api-ts-sdk";
+import Seed from "./Seed";
 
 const RecommendationsList = ({
   recommendations,
@@ -7,14 +8,16 @@ const RecommendationsList = ({
   recommendations: Track[];
   recommendationSeeds: (Track | Artist)[];
 }) => {
+  if (recommendations.length === 0) return null;
+
   return (
-    <div>
-      Recommendations based on:
-      <ul>
+    <div className="flex flex-col items-center">
+      Here&apos;s a playlist based on recommendations for:
+      <div className=" flex flex-row gap-4">
         {recommendationSeeds.map((seed) => (
-          <li key={seed.id}>{seed.name}</li>
+          <Seed key={seed.id} seed={seed} />
         ))}
-      </ul>
+      </div>
       <ul>
         {recommendations.map((track) => (
           <li key={track.id}>

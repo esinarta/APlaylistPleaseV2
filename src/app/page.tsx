@@ -42,23 +42,6 @@ export default function Home() {
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
           A Playlist, Please.
         </h1>
-        <Tabs
-          value={searchType}
-          defaultValue="artist"
-          onValueChange={onTabChange}
-        >
-          <TabsList>
-            <TabsTrigger
-              value="artist"
-              onChange={() => setSearchType("artist")}
-            >
-              Artist
-            </TabsTrigger>
-            <TabsTrigger value="track" onChange={() => setSearchType("track")}>
-              Track
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
         {recommendationSeeds.length > 0 && (
           <RecommendationsForm
             recommendationSeeds={recommendationSeeds}
@@ -66,24 +49,43 @@ export default function Home() {
             setRecommendations={setRecommendations}
           />
         )}
-        <Command
-          className="w-1/2 rounded-lg border shadow-md"
-          shouldFilter={false}
-        >
-          <CommandInput
-            placeholder={
-              searchType === "artist" ? "Search by artist" : "Search by track"
-            }
-            onValueChange={setQuery}
-          />
-          <CommandList>
-            <SearchResultsList
-              results={results}
-              recommendationSeeds={recommendationSeeds}
-              setRecommendationSeeds={setRecommendationSeeds}
+        <div className="w-1/2 flex flex-row justify-center items-center gap-4">
+          <Command className="rounded-lg border shadow-md" shouldFilter={false}>
+            <CommandInput
+              placeholder={
+                searchType === "artist" ? "Search by artist" : "Search by track"
+              }
+              onValueChange={setQuery}
             />
-          </CommandList>
-        </Command>
+            <CommandList>
+              <SearchResultsList
+                results={results}
+                recommendationSeeds={recommendationSeeds}
+                setRecommendationSeeds={setRecommendationSeeds}
+              />
+            </CommandList>
+          </Command>
+          <Tabs
+            value={searchType}
+            defaultValue="artist"
+            onValueChange={onTabChange}
+          >
+            <TabsList>
+              <TabsTrigger
+                value="artist"
+                onChange={() => setSearchType("artist")}
+              >
+                Artist
+              </TabsTrigger>
+              <TabsTrigger
+                value="track"
+                onChange={() => setSearchType("track")}
+              >
+                Track
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
       </div>
       <RecommendationsList
         recommendations={recommendations}

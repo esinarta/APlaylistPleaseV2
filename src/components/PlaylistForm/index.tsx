@@ -2,24 +2,48 @@ import { Track } from "@spotify/web-api-ts-sdk";
 import { useState } from "react";
 import sdk from "@/lib/spotify-sdk/ClientInstance";
 import { useSession } from "next-auth/react";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 
 const PlaylistForm = ({ recommendations }: { recommendations: Track[] }) => {
   const { data: session } = useSession();
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [visibility, setVisibility] = useState<"public" | "private">("private");
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const formSchema = z.object({
+    name: z.string().min(1),
+    description: z.string(),
+    public: z.boolean().default(true),
+  });
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      public: true,
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (!session) return;
 
     (async () => {
-      const playlist = await sdk.playlists.createPlaylist(session.user.id, {
-        name,
-        description,
-        public: visibility === "public",
-      });
+      const playlist = await sdk.playlists.createPlaylist(
+        session.user.id,
+        values
+      );
 
       await sdk.playlists.addItemsToPlaylist(
         playlist.id,
@@ -29,49 +53,57 @@ const PlaylistForm = ({ recommendations }: { recommendations: Track[] }) => {
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <div>
-        <label>Playlist Name: </label>
-        <input
-          className="text-black"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-4">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div>
-        <label>Playlist Description: </label>
-        <input
-          className="text-black"
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div>
-        <label>
-          Public
-          <input
-            type="radio"
-            name="visibility"
-            value="public"
-            checked={visibility === "public"}
-            onChange={() => setVisibility("public")}
-          />
-        </label>
-        <label>
-          Private
-          <input
-            type="radio"
-            name="visibility"
-            value="private"
-            checked={visibility === "private"}
-            onChange={() => setVisibility("private")}
-          />
-        </label>
-      </div>
-      <button type="submit">Create Playlist</button>
-    </form>
+        <FormField
+          control={form.control}
+          name="public"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between">
+              <div className="space-y-0.5">
+                <FormLabel>Public</FormLabel>
+                <FormDescription>
+                  Your playlist will be visible to other users
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
   );
 };
 

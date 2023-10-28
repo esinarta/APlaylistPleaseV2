@@ -5,10 +5,12 @@ const SearchResultsList = ({
   results,
   recommendationSeeds,
   setRecommendationSeeds,
+  setQuery,
 }: {
   results: SearchResults<"artist"[] | "track"[]> | undefined;
   recommendationSeeds: (Artist | Track)[];
   setRecommendationSeeds: (seeds: (Artist | Track)[]) => void;
+  setQuery: (query: string) => void;
 }) => {
   if (!results) return null;
 
@@ -16,6 +18,7 @@ const SearchResultsList = ({
     if (recommendationSeeds.find((s) => s.id === seed.id)) return;
     if (recommendationSeeds.length >= 5) return;
 
+    setQuery("");
     setRecommendationSeeds([...recommendationSeeds, seed]);
   };
 

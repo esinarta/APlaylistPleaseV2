@@ -62,6 +62,7 @@ export default function Home() {
                 results={results}
                 recommendationSeeds={recommendationSeeds}
                 setRecommendationSeeds={setRecommendationSeeds}
+                setQuery={setQuery}
               />
             </CommandList>
           </Command>

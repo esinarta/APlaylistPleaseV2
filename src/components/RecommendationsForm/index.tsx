@@ -5,6 +5,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Chip } from "@nextui-org/chip";
 import { Label } from "@/components/ui/label";
+import { X } from "lucide-react";
 
 const RecommendationsForm = ({
   recommendationSeeds,
@@ -39,34 +40,42 @@ const RecommendationsForm = ({
   };
 
   return (
-    <form
-      className="w-1/2 flex flex-row justify-between items-end gap-2"
-      onSubmit={onSubmit}
-    >
-      <div className="flex items-end gap-2">
+    <form className="w-full flex flex-col gap-4" onSubmit={onSubmit}>
+      <div className="text-sm font-medium text-center">
+        Generating a playlist based off the following artists and tracks (max
+        5):
+      </div>
+      <div className="flex flex-col gap-2">
         {recommendationSeeds.map((seed) => (
-          <Chip key={seed.id} onClose={() => deleteSeed(seed.id)}>
-            <div className="w-12 truncate text-ellipsis">{seed.name}</div>
-          </Chip>
+          <div
+            key={seed.id}
+            className="flex flex-row justify-between items-center rounded-lg border px-2 py-1"
+          >
+            <div className="text-sm truncate text-ellipsis">{seed.name}</div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => deleteSeed(seed.id)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         ))}
       </div>
-      <div className="flex flex-row items-end gap-4">
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="size">Playlist Size</Label>
-          <Input
-            className="w-20"
-            type="number"
-            name="size"
-            value={size}
-            min={1}
-            max={100}
-            onChange={(event) => setSize(parseInt(event.target.value))}
-          />
-        </div>
-        <Button className="flex justify-end" type="submit">
-          Submit
-        </Button>
+      <div>
+        <Label htmlFor="size">Playlist Size (max 50)</Label>
+        <Input
+          type="number"
+          name="size"
+          value={size}
+          min={1}
+          max={100}
+          onChange={(event) => setSize(parseInt(event.target.value))}
+        />
       </div>
+      <Button className="" type="submit">
+        Generate
+      </Button>
     </form>
   );
 };

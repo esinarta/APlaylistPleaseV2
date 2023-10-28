@@ -42,50 +42,59 @@ export default function Home() {
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
           A Playlist, Please.
         </h1>
-        {recommendationSeeds.length > 0 && (
-          <RecommendationsForm
-            recommendationSeeds={recommendationSeeds}
-            setRecommendationSeeds={setRecommendationSeeds}
-            setRecommendations={setRecommendations}
-          />
-        )}
-        <div className="w-1/2 flex flex-row justify-center items-start gap-4">
-          <Command className="rounded-lg border shadow-md" shouldFilter={false}>
-            <CommandInput
-              placeholder={
-                searchType === "artist" ? "Search by artist" : "Search by track"
-              }
-              onValueChange={setQuery}
-            />
-            <CommandList>
-              <SearchResultsList
-                results={results}
-                recommendationSeeds={recommendationSeeds}
-                setRecommendationSeeds={setRecommendationSeeds}
-                setQuery={setQuery}
+        <div className="w-1/2 flex flex-row justify-end gap-4">
+          <div className="absolute w-1/2 flex flex-row justify-end gap-4">
+            <Command
+              className="rounded-lg border shadow-md"
+              shouldFilter={false}
+            >
+              <CommandInput
+                placeholder={
+                  searchType === "artist"
+                    ? "Search by artist"
+                    : "Search by track"
+                }
+                onValueChange={setQuery}
               />
-            </CommandList>
-          </Command>
-          <Tabs
-            value={searchType}
-            defaultValue="artist"
-            onValueChange={onTabChange}
-          >
-            <TabsList>
-              <TabsTrigger
-                value="artist"
-                onChange={() => setSearchType("artist")}
-              >
-                Artist
-              </TabsTrigger>
-              <TabsTrigger
-                value="track"
-                onChange={() => setSearchType("track")}
-              >
-                Track
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+              <CommandList>
+                <SearchResultsList
+                  results={results}
+                  recommendationSeeds={recommendationSeeds}
+                  setRecommendationSeeds={setRecommendationSeeds}
+                  setQuery={setQuery}
+                />
+              </CommandList>
+            </Command>
+            <Tabs
+              value={searchType}
+              defaultValue="artist"
+              onValueChange={onTabChange}
+            >
+              <TabsList>
+                <TabsTrigger
+                  value="artist"
+                  onChange={() => setSearchType("artist")}
+                >
+                  Artist
+                </TabsTrigger>
+                <TabsTrigger
+                  value="track"
+                  onChange={() => setSearchType("track")}
+                >
+                  Track
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+        </div>
+        <div className="w-1/2 flex justify-center items-center mt-16">
+          {recommendationSeeds.length > 0 && (
+            <RecommendationsForm
+              recommendationSeeds={recommendationSeeds}
+              setRecommendationSeeds={setRecommendationSeeds}
+              setRecommendations={setRecommendations}
+            />
+          )}
         </div>
       </div>
       <RecommendationsList

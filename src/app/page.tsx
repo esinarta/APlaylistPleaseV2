@@ -49,7 +49,7 @@ export default function Home() {
             setRecommendations={setRecommendations}
           />
         )}
-        <div className="w-1/2 flex flex-row justify-center items-center gap-4">
+        <div className="w-1/2 flex flex-row justify-center items-start gap-4">
           <Command className="rounded-lg border shadow-md" shouldFilter={false}>
             <CommandInput
               placeholder={

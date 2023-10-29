@@ -6,7 +6,6 @@ import sdk from "@/lib/spotify-sdk/ClientInstance";
 import SearchResultsList from "@/components/SearchResultsList";
 import RecommendationsForm from "@/components/RecommendationsForm";
 import RecommendationsList from "@/components/RecommendationsList";
-import PlaylistForm from "@/components/PlaylistForm";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Command, CommandInput, CommandList } from "@/components/ui/command";
 
@@ -24,6 +23,12 @@ export default function Home() {
     if (value === "artist" || value === "track") setSearchType(value);
   };
 
+  const reset = () => {
+    setQuery("");
+    setRecommendationSeeds([]);
+    setRecommendations([]);
+  };
+
   useEffect(() => {
     if (query === "") {
       setResults(undefined);
@@ -38,72 +43,77 @@ export default function Home() {
 
   return (
     <div>
-      <div className="flex flex-col justify-center items-center gap-4">
+      <div className="flex flex-col justify-center items-center gap-12">
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
           A Playlist, Please.
         </h1>
-        <div className="w-1/2 flex flex-row justify-end gap-4">
-          <div className="absolute w-1/2 flex flex-row justify-end gap-4">
-            <Command
-              className="rounded-lg border shadow-md"
-              shouldFilter={false}
-            >
-              <CommandInput
-                placeholder={
-                  searchType === "artist"
-                    ? "Search by artist"
-                    : "Search by track"
-                }
-                onValueChange={setQuery}
-              />
-              <CommandList>
-                <SearchResultsList
-                  results={results}
+        {!recommendations.length ? (
+          <>
+            <div className="w-1/2 flex flex-row justify-end gap-4">
+              <div className="absolute w-1/2 flex flex-row justify-end gap-4">
+                <Command
+                  className="rounded-lg border shadow-md"
+                  shouldFilter={false}
+                >
+                  <CommandInput
+                    placeholder={
+                      searchType === "artist"
+                        ? "Search by artist"
+                        : "Search by track"
+                    }
+                    onValueChange={setQuery}
+                  />
+                  <CommandList>
+                    <SearchResultsList
+                      results={results}
+                      recommendationSeeds={recommendationSeeds}
+                      setRecommendationSeeds={setRecommendationSeeds}
+                      setQuery={setQuery}
+                    />
+                  </CommandList>
+                </Command>
+                <Tabs
+                  value={searchType}
+                  defaultValue="artist"
+                  onValueChange={onTabChange}
+                >
+                  <TabsList>
+                    <TabsTrigger
+                      value="artist"
+                      onChange={() => setSearchType("artist")}
+                    >
+                      Artist
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="track"
+                      onChange={() => setSearchType("track")}
+                    >
+                      Track
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+            </div>
+            <div className="w-1/2 flex justify-center items-center mt-16">
+              {recommendationSeeds.length > 0 && (
+                <RecommendationsForm
                   recommendationSeeds={recommendationSeeds}
                   setRecommendationSeeds={setRecommendationSeeds}
-                  setQuery={setQuery}
+                  setRecommendations={setRecommendations}
                 />
-              </CommandList>
-            </Command>
-            <Tabs
-              value={searchType}
-              defaultValue="artist"
-              onValueChange={onTabChange}
-            >
-              <TabsList>
-                <TabsTrigger
-                  value="artist"
-                  onChange={() => setSearchType("artist")}
-                >
-                  Artist
-                </TabsTrigger>
-                <TabsTrigger
-                  value="track"
-                  onChange={() => setSearchType("track")}
-                >
-                  Track
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-        </div>
-        <div className="w-1/2 flex justify-center items-center mt-16">
-          {recommendationSeeds.length > 0 && (
-            <RecommendationsForm
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="w-1/2">
+            <RecommendationsList
+              recommendations={recommendations}
               recommendationSeeds={recommendationSeeds}
-              setRecommendationSeeds={setRecommendationSeeds}
-              setRecommendations={setRecommendations}
+              reset={reset}
             />
-          )}
-        </div>
+          </div>
+        )}
       </div>
-      <RecommendationsList
-        recommendations={recommendations}
-        recommendationSeeds={recommendationSeeds}
-      />
-      {recommendations.length > 0 && (
-        <PlaylistForm recommendations={recommendations} />
-      )}
     </div>
   );
 }

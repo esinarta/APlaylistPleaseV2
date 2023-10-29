@@ -5,6 +5,7 @@ const Seed = ({ seed }: { seed: Track | Artist }) => {
   return (
     <div className="flex flex-col items-center gap-2">
       <Image
+        className="object-none"
         src={
           seed.type === "artist"
             ? (seed as Artist).images[0].url

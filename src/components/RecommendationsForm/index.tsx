@@ -40,27 +40,29 @@ const RecommendationsForm = ({
   };
 
   return (
-    <form className="w-full flex flex-col gap-4" onSubmit={onSubmit}>
-      <div className="text-sm font-medium text-center">
-        Generating a playlist based off the following artists and tracks (max
-        5):
-      </div>
-      <div className="flex flex-col gap-2">
-        {recommendationSeeds.map((seed) => (
-          <div
-            key={seed.id}
-            className="flex flex-row justify-between items-center rounded-lg border px-2 py-1"
-          >
-            <div className="text-sm truncate text-ellipsis">{seed.name}</div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => deleteSeed(seed.id)}
+    <form className="w-full flex flex-col gap-8" onSubmit={onSubmit}>
+      <div className="w-full flex flex-col gap-1">
+        <div className="text-sm font-medium">
+          Generating a playlist based off the following artists and tracks (max
+          5)
+        </div>
+        <div className="flex flex-col gap-2">
+          {recommendationSeeds.map((seed) => (
+            <div
+              key={seed.id}
+              className="flex flex-row justify-between items-center rounded-lg border px-2 py-1"
             >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-        ))}
+              <div className="text-sm truncate text-ellipsis">{seed.name}</div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => deleteSeed(seed.id)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+        </div>
       </div>
       <div>
         <Label htmlFor="size">Playlist Size (max 50)</Label>

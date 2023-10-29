@@ -3,7 +3,6 @@ import sdk from "@/lib/spotify-sdk/ClientInstance";
 import { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Chip } from "@nextui-org/chip";
 import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
 

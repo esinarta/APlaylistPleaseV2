@@ -1,5 +1,4 @@
 import { Track } from "@spotify/web-api-ts-sdk";
-import { useState } from "react";
 import sdk from "@/lib/spotify-sdk/ClientInstance";
 import { useSession } from "next-auth/react";
 import { z } from "zod";

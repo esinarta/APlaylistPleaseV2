@@ -16,8 +16,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { useState } from "react";
+import { CheckCircle2 } from "lucide-react";
 
 const PlaylistForm = ({ recommendations }: { recommendations: Track[] }) => {
+  const [saved, setSaved] = useState(false);
   const { data: session } = useSession();
 
   const formSchema = z.object({
@@ -44,12 +47,22 @@ const PlaylistForm = ({ recommendations }: { recommendations: Track[] }) => {
         values
       );
 
-      await sdk.playlists.addItemsToPlaylist(
-        playlist.id,
-        recommendations.map((track) => `spotify:track:${track.id}`)
-      );
+      await sdk.playlists
+        .addItemsToPlaylist(
+          playlist.id,
+          recommendations.map((track) => `spotify:track:${track.id}`)
+        )
+        .then(() => setSaved(true));
     })();
   };
+
+  if (saved)
+    return (
+      <div className="flex flex-col items-center gap-2">
+        <CheckCircle2 size={128} />
+        <div className="font-medium">Playlist saved!</div>
+      </div>
+    );
 
   return (
     <Form {...form}>

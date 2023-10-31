@@ -7,7 +7,13 @@ import SearchResultsList from "@/components/SearchResultsList";
 import RecommendationsForm from "@/components/RecommendationsForm";
 import RecommendationsList from "@/components/RecommendationsList";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Command, CommandInput, CommandList } from "@/components/ui/command";
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandSeparator,
+} from "@/components/ui/command";
+import Suggestions from "@/components/Suggestions";
 
 export default function Home() {
   const [searchType, setSearchType] = useState<"artist" | "track">("artist");
@@ -21,6 +27,14 @@ export default function Home() {
 
   const onTabChange = (value: string) => {
     if (value === "artist" || value === "track") setSearchType(value);
+  };
+
+  const addSeed = (seed: Artist | Track) => {
+    if (recommendationSeeds.find((s) => s.id === seed.id)) return;
+    if (recommendationSeeds.length >= 5) return;
+
+    setQuery("");
+    setRecommendationSeeds([...recommendationSeeds, seed]);
   };
 
   const reset = () => {
@@ -64,12 +78,8 @@ export default function Home() {
                     onValueChange={setQuery}
                   />
                   <CommandList>
-                    <SearchResultsList
-                      results={results}
-                      recommendationSeeds={recommendationSeeds}
-                      setRecommendationSeeds={setRecommendationSeeds}
-                      setQuery={setQuery}
-                    />
+                    <Suggestions searchType={searchType} addSeed={addSeed} />
+                    <SearchResultsList results={results} addSeed={addSeed} />
                   </CommandList>
                 </Command>
                 <Tabs

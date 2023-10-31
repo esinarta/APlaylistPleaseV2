@@ -1,29 +1,17 @@
 import { Artist, SearchResults, Track } from "@spotify/web-api-ts-sdk";
-import { CommandItem } from "@/components/ui/command";
+import { CommandGroup, CommandItem } from "@/components/ui/command";
 
 const SearchResultsList = ({
   results,
-  recommendationSeeds,
-  setRecommendationSeeds,
-  setQuery,
+  addSeed,
 }: {
   results: SearchResults<"artist"[] | "track"[]> | undefined;
-  recommendationSeeds: (Artist | Track)[];
-  setRecommendationSeeds: (seeds: (Artist | Track)[]) => void;
-  setQuery: (query: string) => void;
+  addSeed: (seed: Artist | Track) => void;
 }) => {
   if (!results) return null;
 
-  const addSeed = (seed: Artist | Track) => {
-    if (recommendationSeeds.find((s) => s.id === seed.id)) return;
-    if (recommendationSeeds.length >= 5) return;
-
-    setQuery("");
-    setRecommendationSeeds([...recommendationSeeds, seed]);
-  };
-
   return (
-    <div>
+    <CommandGroup heading="Search results">
       {results.artists && (
         <div>
           {results.artists.items.map((artist) => (
@@ -50,7 +38,7 @@ const SearchResultsList = ({
           ))}
         </div>
       )}
-    </div>
+    </CommandGroup>
   );
 };
 

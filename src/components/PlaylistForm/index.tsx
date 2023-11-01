@@ -105,7 +105,7 @@ const PlaylistForm = ({ recommendations }: { recommendations: Track[] }) => {
               <div className="space-y-0.5">
                 <FormLabel>Public</FormLabel>
                 <FormDescription>
-                  Your playlist will be visible to other users
+                  Your playlist will appear on your public profile
                 </FormDescription>
               </div>
               <FormControl>

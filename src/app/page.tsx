@@ -7,12 +7,7 @@ import SearchResultsList from "@/components/SearchResultsList";
 import RecommendationsForm from "@/components/RecommendationsForm";
 import RecommendationsList from "@/components/RecommendationsList";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Command,
-  CommandInput,
-  CommandList,
-  CommandSeparator,
-} from "@/components/ui/command";
+import { Command, CommandInput, CommandList } from "@/components/ui/command";
 import Suggestions from "@/components/Suggestions";
 
 export default function Home() {
@@ -24,6 +19,7 @@ export default function Home() {
     (Artist | Track)[]
   >([]);
   const [recommendations, setRecommendations] = useState<Track[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const onTabChange = (value: string) => {
     if (value === "artist" || value === "track") setSearchType(value);
@@ -35,6 +31,7 @@ export default function Home() {
 
     setQuery("");
     setRecommendationSeeds([...recommendationSeeds, seed]);
+    setShowSuggestions(false);
   };
 
   const reset = () => {
@@ -76,9 +73,20 @@ export default function Home() {
                         : "Search by track"
                     }
                     onValueChange={setQuery}
+                    onFocus={() => setShowSuggestions(true)}
+                    onBlur={(e) => {
+                      // Prevents onBlur from firing when clicking on a suggestion or result
+                      if (
+                        !e.relatedTarget?.classList.contains("suggestion") &&
+                        !e.relatedTarget?.classList.contains("result")
+                      )
+                        setShowSuggestions(false);
+                    }}
                   />
                   <CommandList>
-                    <Suggestions searchType={searchType} addSeed={addSeed} />
+                    {showSuggestions && (
+                      <Suggestions searchType={searchType} addSeed={addSeed} />
+                    )}
                     <SearchResultsList results={results} addSeed={addSeed} />
                   </CommandList>
                 </Command>

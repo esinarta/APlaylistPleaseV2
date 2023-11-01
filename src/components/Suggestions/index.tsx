@@ -33,7 +33,7 @@ const Suggestions = ({
     })();
   }, []);
 
-  if (!topTracks || !topArtists) return null;
+  if (!topTracks.length || !topArtists.length) return null;
 
   return (
     <>
@@ -43,9 +43,11 @@ const Suggestions = ({
         {searchType === "artist" &&
           topArtists.map((artist) => (
             <CommandItem
+              className="suggestion"
               key={artist.id}
               value={artist.id}
               onSelect={() => addSeed(artist)}
+              tabIndex={0} // Required for input's onBlur event to contain relatedTarget attribute
             >
               {artist.name}
             </CommandItem>
@@ -53,9 +55,11 @@ const Suggestions = ({
         {searchType === "track" &&
           topTracks.map((track) => (
             <CommandItem
+              className="suggestion"
               key={track.id}
               value={track.id}
               onSelect={() => addSeed(track)}
+              tabIndex={0} // Required for input's onBlur event to contain relatedTarget attribute
             >
               {track.name} - {track.artists[0].name}
             </CommandItem>

@@ -16,9 +16,11 @@ const SearchResultsList = ({
         <div>
           {results.artists.items.map((artist) => (
             <CommandItem
+              className="result"
               key={artist.id}
               value={artist.id}
               onSelect={() => addSeed(artist)}
+              tabIndex={0} // Required for input's onBlur event to contain relatedTarget attribute
             >
               {artist.name}
             </CommandItem>
@@ -29,9 +31,11 @@ const SearchResultsList = ({
         <div>
           {results.tracks.items.map((track) => (
             <CommandItem
+              className="result"
               key={track.id}
               value={track.id}
               onSelect={() => addSeed(track)}
+              tabIndex={0} // Required for input's onBlur event to contain relatedTarget attribute
             >
               {track.name} - {track.artists[0].name}
             </CommandItem>

@@ -5,6 +5,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 const RecommendationsForm = ({
   recommendationSeeds,
@@ -15,6 +16,7 @@ const RecommendationsForm = ({
   setRecommendationSeeds: (seeds: (Artist | Track)[]) => void;
   setRecommendations: (tracks: Track[]) => void;
 }) => {
+  const [loading, setLoading] = useState(false);
   const [size, setSize] = useState(20);
 
   const deleteSeed = (seedId: string) => {
@@ -24,6 +26,7 @@ const RecommendationsForm = ({
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    setLoading(true);
     (async () => {
       const results = await sdk.recommendations.get({
         seed_artists: recommendationSeeds
@@ -35,11 +38,12 @@ const RecommendationsForm = ({
         limit: size,
       });
       setRecommendations(results.tracks);
+      setLoading(false);
     })();
   };
 
   return (
-    <form className="w-full flex flex-col gap-8" onSubmit={onSubmit}>
+    <form className="w-full flex flex-col gap-8 mb-4" onSubmit={onSubmit}>
       <div className="w-full flex flex-col gap-1">
         <div className="text-sm font-medium">
           Generating a playlist based off the following artists and tracks (max
@@ -74,7 +78,8 @@ const RecommendationsForm = ({
           onChange={(event) => setSize(parseInt(event.target.value))}
         />
       </div>
-      <Button className="" type="submit">
+      <Button disabled={loading} type="submit">
+        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         Generate
       </Button>
     </form>

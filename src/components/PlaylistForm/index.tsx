@@ -18,8 +18,10 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 const PlaylistForm = ({ recommendations }: { recommendations: Track[] }) => {
+  const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
   const { data: session } = useSession();
 
@@ -41,18 +43,20 @@ const PlaylistForm = ({ recommendations }: { recommendations: Track[] }) => {
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (!session) return;
 
+    setLoading(true);
     (async () => {
       const playlist = await sdk.playlists.createPlaylist(
         session.user.id,
         values
       );
 
-      await sdk.playlists
-        .addItemsToPlaylist(
-          playlist.id,
-          recommendations.map((track) => `spotify:track:${track.id}`)
-        )
-        .then(() => setSaved(true));
+      await sdk.playlists.addItemsToPlaylist(
+        playlist.id,
+        recommendations.map((track) => `spotify:track:${track.id}`)
+      );
+
+      setSaved(true);
+      setLoading(false);
     })();
   };
 
@@ -113,7 +117,10 @@ const PlaylistForm = ({ recommendations }: { recommendations: Track[] }) => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button disabled={loading} type="submit">
+          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Save
+        </Button>
       </form>
     </Form>
   );

@@ -19,7 +19,7 @@ const User = () => {
 
   if (session) {
     return (
-      <div className="mr-4">
+      <div className="md:mr-4">
         <DropdownMenu>
           <DropdownMenuTrigger>
             <div className="flex items-center gap-2">
@@ -32,7 +32,7 @@ const User = () => {
               </Avatar>
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mr-8">
+          <DropdownMenuContent className="mr-4 md:mr-8">
             <DropdownMenuLabel>
               Signed in as {session.user?.name ?? session.user?.email}
             </DropdownMenuLabel>

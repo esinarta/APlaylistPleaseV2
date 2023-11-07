@@ -60,8 +60,8 @@ export default function Home() {
         </h1>
         {!recommendations.length ? (
           <>
-            <div className="w-1/2 flex flex-row justify-end gap-4">
-              <div className="absolute w-1/2 flex flex-row justify-end gap-4">
+            <div className="w-full md:w-1/2 flex flex-row justify-end gap-4">
+              <div className="absolute w-full md:w-1/2 flex flex-row justify-end gap-4 px-8 md:px-0">
                 <Command
                   className="rounded-lg border shadow-md"
                   shouldFilter={false}
@@ -112,7 +112,7 @@ export default function Home() {
                 </Tabs>
               </div>
             </div>
-            <div className="w-1/2 flex justify-center items-center mt-16">
+            <div className="w-full md:w-1/2 flex justify-center items-center mt-16 px-8 md:px-0">
               {recommendationSeeds.length > 0 && (
                 <RecommendationsForm
                   recommendationSeeds={recommendationSeeds}
@@ -123,7 +123,7 @@ export default function Home() {
             </div>
           </>
         ) : (
-          <div className="w-1/2">
+          <div className="w-full md:w-1/2 px-8 md:px-0">
             <RecommendationsList
               recommendations={recommendations}
               recommendationSeeds={recommendationSeeds}

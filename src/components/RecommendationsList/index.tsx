@@ -30,7 +30,7 @@ const RecommendationsList = ({
             <Seed key={seed.id} seed={seed} />
           ))}
         </div>
-        <div className="w-1/2 flex flex-col gap-2">
+        <div className="w-full md:w-1/2 flex flex-col gap-2">
           {recommendations.map((track) => (
             <div
               key={track.id}
@@ -42,7 +42,7 @@ const RecommendationsList = ({
             </div>
           ))}
         </div>
-        <div className="w-1/2 flex flex-row justify-between">
+        <div className="w-full md:w-1/2 flex flex-row justify-between">
           <Button variant="outline" onClick={reset}>
             Back
           </Button>
@@ -50,11 +50,11 @@ const RecommendationsList = ({
             <DialogTrigger>
               <Button>Save</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="overflow-y-scroll max-h-screen">
               <DialogHeader>
                 <DialogTitle>Save Playlist</DialogTitle>
-                <PlaylistForm recommendations={recommendations} />
               </DialogHeader>
+              <PlaylistForm recommendations={recommendations} />
             </DialogContent>
           </Dialog>
         </div>

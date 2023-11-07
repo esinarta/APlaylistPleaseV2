@@ -22,7 +22,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`dark ${inter.className}`}>
         <Providers>
           <SessionProvider session={session}>
             <div className="flex justify-end m-2">

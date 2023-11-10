@@ -47,7 +47,7 @@ const RecommendationsList = ({
             Back
           </Button>
           <Dialog>
-            <DialogTrigger>
+            <DialogTrigger asChild>
               <Button>Save</Button>
             </DialogTrigger>
             <DialogContent className="overflow-y-scroll max-h-screen">

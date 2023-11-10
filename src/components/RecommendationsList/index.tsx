@@ -50,7 +50,7 @@ const RecommendationsList = ({
             <DialogTrigger asChild>
               <Button>Save</Button>
             </DialogTrigger>
-            <DialogContent className="overflow-y-scroll max-h-screen">
+            <DialogContent className="overflow-y-scroll max-h-screen max-w-sm md:max-w-md">
               <DialogHeader>
                 <DialogTitle>Save Playlist</DialogTitle>
               </DialogHeader>

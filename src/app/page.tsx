@@ -9,6 +9,7 @@ import RecommendationsList from "@/components/RecommendationsList";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Command, CommandInput, CommandList } from "@/components/ui/command";
 import Suggestions from "@/components/Suggestions";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function Home() {
   const [searchType, setSearchType] = useState<"artist" | "track">("artist");
@@ -33,6 +34,10 @@ export default function Home() {
     setRecommendationSeeds([...recommendationSeeds, seed]);
     setShowSuggestions(false);
   };
+
+  const handleSearch = useDebouncedCallback((value) => {
+    setQuery(value);
+  }, 500);
 
   const reset = () => {
     setQuery("");
@@ -72,7 +77,7 @@ export default function Home() {
                         ? "Search by artist"
                         : "Search by track"
                     }
-                    onValueChange={setQuery}
+                    onValueChange={handleSearch}
                     onFocus={() => setShowSuggestions(true)}
                     onBlur={(e) => {
                       // Prevents onBlur from firing when clicking on a suggestion or result

@@ -89,7 +89,7 @@ export default function Home() {
                     }}
                   />
                   <CommandList>
-                    {showSuggestions && (
+                    {showSuggestions && !query.length && (
                       <Suggestions searchType={searchType} addSeed={addSeed} />
                     )}
                     <SearchResultsList results={results} addSeed={addSeed} />

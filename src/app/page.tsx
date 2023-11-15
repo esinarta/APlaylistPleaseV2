@@ -6,12 +6,12 @@ import sdk from "@/lib/spotify-sdk/ClientInstance";
 import SearchResultsList from "@/components/SearchResultsList";
 import RecommendationsForm from "@/components/RecommendationsForm";
 import RecommendationsList from "@/components/RecommendationsList";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Command, CommandInput, CommandList } from "@/components/ui/command";
 import Suggestions from "@/components/Suggestions";
 import { useDebouncedCallback } from "use-debounce";
 import { useSession } from "next-auth/react";
 import SignIn from "@/components/SignIn";
+import SearchTabs from "@/components/SearchTabs";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -24,10 +24,6 @@ export default function Home() {
   >([]);
   const [recommendations, setRecommendations] = useState<Track[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-
-  const onTabChange = (value: string) => {
-    if (value === "artist" || value === "track") setSearchType(value);
-  };
 
   const addSeed = (seed: Artist | Track) => {
     if (recommendationSeeds.find((s) => s.id === seed.id)) return;
@@ -116,26 +112,10 @@ export default function Home() {
                         />
                       </CommandList>
                     </Command>
-                    <Tabs
-                      value={searchType}
-                      defaultValue="artist"
-                      onValueChange={onTabChange}
-                    >
-                      <TabsList>
-                        <TabsTrigger
-                          value="artist"
-                          onChange={() => setSearchType("artist")}
-                        >
-                          Artist
-                        </TabsTrigger>
-                        <TabsTrigger
-                          value="track"
-                          onChange={() => setSearchType("track")}
-                        >
-                          Track
-                        </TabsTrigger>
-                      </TabsList>
-                    </Tabs>
+                    <SearchTabs
+                      searchType={searchType}
+                      setSearchType={setSearchType}
+                    />
                   </div>
                 </div>
                 <div className="w-full md:w-1/2 flex justify-center items-center mt-16 px-8 md:px-0">

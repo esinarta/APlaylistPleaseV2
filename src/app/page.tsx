@@ -13,6 +13,8 @@ import { useSession } from "next-auth/react";
 import SignIn from "@/components/SignIn";
 import SearchTabs from "@/components/SearchTabs";
 
+const NUM_SUGGESTIONS_SHOWN = 3;
+
 export default function Home() {
   const { data: session, status } = useSession();
   const [searchType, setSearchType] = useState<"artist" | "track">("artist");
@@ -24,6 +26,8 @@ export default function Home() {
   >([]);
   const [recommendations, setRecommendations] = useState<Track[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [topTracks, setTopTracks] = useState<Track[]>([]);
+  const [topArtists, setTopArtists] = useState<Artist[]>([]);
 
   const addSeed = (seed: Artist | Track) => {
     if (recommendationSeeds.find((s) => s.id === seed.id)) return;
@@ -43,6 +47,26 @@ export default function Home() {
     setRecommendationSeeds([]);
     setRecommendations([]);
   };
+
+  useEffect(() => {
+    (async () => {
+      if (topTracks.length && topArtists.length) return;
+
+      const artists = await sdk.currentUser.topItems(
+        "artists",
+        "short_term",
+        NUM_SUGGESTIONS_SHOWN
+      );
+      setTopArtists(() => artists.items);
+
+      const tracks = await sdk.currentUser.topItems(
+        "tracks",
+        "short_term",
+        NUM_SUGGESTIONS_SHOWN
+      );
+      setTopTracks(() => tracks.items);
+    })();
+  }, [topTracks.length, topArtists.length]);
 
   useEffect(() => {
     if (query === "") {
@@ -102,6 +126,8 @@ export default function Home() {
                       <CommandList>
                         {session && showSuggestions && !query.length && (
                           <Suggestions
+                            topTracks={topTracks}
+                            topArtists={topArtists}
                             searchType={searchType}
                             addSeed={addSeed}
                           />

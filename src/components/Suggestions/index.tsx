@@ -1,38 +1,17 @@
 import { Track, Artist } from "@spotify/web-api-ts-sdk";
-import { useEffect, useState } from "react";
 import { CommandGroup, CommandItem } from "../ui/command";
-import sdk from "@/lib/spotify-sdk/ClientInstance";
-
-const NUM_SHOWN = 3;
 
 const Suggestions = ({
+  topTracks,
+  topArtists,
   searchType,
   addSeed,
 }: {
+  topTracks: Track[];
+  topArtists: Artist[];
   searchType: "artist" | "track";
   addSeed: (seed: Artist | Track) => void;
 }) => {
-  const [topTracks, setTopTracks] = useState<Track[]>([]);
-  const [topArtists, setTopArtists] = useState<Artist[]>([]);
-
-  useEffect(() => {
-    (async () => {
-      const artists = await sdk.currentUser.topItems(
-        "artists",
-        "short_term",
-        NUM_SHOWN
-      );
-      setTopArtists(() => artists.items);
-
-      const tracks = await sdk.currentUser.topItems(
-        "tracks",
-        "short_term",
-        NUM_SHOWN
-      );
-      setTopTracks(() => tracks.items);
-    })();
-  }, []);
-
   if (!topTracks.length || !topArtists.length) return null;
 
   return (

@@ -87,7 +87,7 @@ export default function Home() {
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
             A Playlist, Please.
           </h1>
-          <div className="text-sm">
+          <div className="text-center text-sm">
             Generate a playlist of recommendations based on a combination of up
             to 5 artists and tracks
           </div>
